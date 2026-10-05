@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HARISH MART - Modern E-Commerce Shopping Experience</title>
+  <meta name="description" content="Shop daily groceries, flagship electronics, trending fashion, kitchen essentials, and wellness products at HARISH MART. Best prices and instant delivery.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons 6.5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+      <div class="announcement-left">
+        <span class="announcement-badge">MEGA SALE</span>
+        <span>Get 25% OFF on orders over ₹999! Use coupon</span>
+        <span class="announcement-code" onclick="navigator.clipboard.writeText('HARISH25'); showToast('Coupon code HARISH25 copied to clipboard!', 'success');" title="Click to copy">
+          HARISH25 <i class="fa-regular fa-copy"></i>
+        </span>
+      </div>
+      <div class="announcement-right">
+        <a href="tel:+919876543210" class="announcement-link">
+          <i class="fa-solid fa-headset"></i> 24/7 Helpline: +91 98765 43210
+        </a>
+        <span style="opacity: 0.4;">|</span>
+        <span class="announcement-link" style="cursor: pointer;" onclick="openAccountModal('history')">
+          <i class="fa-solid fa-location-dot"></i> Deliver to: <b>Bengaluru 560001</b>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Sticky Header -->
+  <header class="main-header">
+    <div class="container header-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-wrap">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HARISH MART</span>
+          <span class="logo-subtitle">Daily Essentials & Beyond</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-wrapper">
+        <div class="search-box">
+          <select id="searchCatSelect" class="search-category-select">
+            <option value="all">All Departments</option>
+            <option value="groceries">Groceries</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home & Kitchen</option>
+            <option value="beauty">Beauty & Wellness</option>
+          </select>
+          <input type="text" id="mainSearchInput" class="search-input" placeholder="Search 1,000+ groceries, smartphones, fashion...">
+          <button id="searchClearBtn" class="search-clear-btn" title="Clear Search">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <button class="search-submit-btn" title="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        <!-- Live Suggestions Popup -->
+        <div id="searchResultsPopup" class="search-results-popup"></div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button id="headerWishlistBtn" class="action-btn" title="Wishlist">
+          <div class="action-icon">
+            <i class="fa-regular fa-heart"></i>
+            <span class="badge-count wishlist-badge-count">0</span>
+          </div>
+          <span style="display: none; @media(min-width: 768px){ display: inline; }">Wishlist</span>
+        </button>
+
+        <!-- Account / Orders Button -->
+        <button id="headerAccountBtn" class="action-btn" title="Account & Orders">
+          <div class="action-icon">
+            <i class="fa-regular fa-user"></i>
+          </div>
+          <span>Account</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button id="headerCartBtn" class="action-btn cart-btn" title="View Cart">
+          <div class="action-icon">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="badge-count cart-badge-count">0</span>
+          </div>
+          <span class="cart-total-text" id="headerCartTotal">₹0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Secondary Navbar: Category Chips -->
+  <nav class="categories-bar">
+    <div class="container">
+      <ul id="categoriesList" class="categories-list">
+        <!-- Injected dynamically by js/ui.js -->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Wrapper -->
+  <main class="container">
+
+    <!-- Hero Promotional Carousel Section -->
+    <section class="hero-section">
+      <div class="hero-carousel">
+        <div class="carousel-slides" id="carouselSlides">
+          
+          <!-- Slide 1: Groceries -->
+          <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80');">
+            <div class="carousel-content">
+              <span class="carousel-tag"><i class="fa-solid fa-bolt"></i> Mega Grocery Carnival</span>
+              <h1 class="carousel-title">Fresh Farm Groceries & Daily Staples</h1>
+              <p class="carousel-desc">Get up to 40% OFF on premium wheat flour, pure oils, basmati rice, and dry fruits. Guaranteed fresh or your money back.</p>
+              <button class="carousel-cta-btn" onclick="app.selectedCategory='groceries'; renderCategories(); renderProducts(); document.getElementById('catalogSection').scrollIntoView({behavior: 'smooth'});">
+                Shop Groceries Now <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Slide 2: Electronics -->
+          <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=80');">
+            <div class="carousel-content">
+              <span class="carousel-tag" style="background: var(--accent-blue); color: #fff;"><i class="fa-solid fa-star"></i> Tech Fest 2026</span>
+              <h1 class="carousel-title">Next-Gen Gadgets & Flagship Tech</h1>
+              <p class="carousel-desc">iPhone 16 Pro, Apple MacBook M3, Sony Noise-Cancelling Headphones, and Smartwatches at unmatched festive prices.</p>
+              <button class="carousel-cta-btn" onclick="app.selectedCategory='electronics'; renderCategories(); renderProducts(); document.getElementById('catalogSection').scrollIntoView({behavior: 'smooth'});">
+                Explore Electronics <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Slide 3: Fashion & Lifestyle -->
+          <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=80');">
+            <div class="carousel-content">
+              <span class="carousel-tag" style="background: var(--accent-green); color: #fff;"><i class="fa-solid fa-fire"></i> New Season Drop</span>
+              <h1 class="carousel-title">Trending Fashion & Premium Footwear</h1>
+              <p class="carousel-desc">Supima cotton tees, classic Levi's denims, Nike Air Max Pulse sneakers, and luxury fragrances crafted for distinction.</p>
+              <button class="carousel-cta-btn" onclick="app.selectedCategory='fashion'; renderCategories(); renderProducts(); document.getElementById('catalogSection').scrollIntoView({behavior: 'smooth'});">
+                Discover Styles <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-nav-btn carousel-prev" id="carouselPrev" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="carousel-nav-btn carousel-next" id="carouselNext" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
+        
+        <!-- Dot Indicators -->
+        <div class="carousel-indicators">
+          <div class="carousel-dot active"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+        </div>
+      </div>
+
+      <!-- Feature Highlights Bar -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box green">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="feature-info">
+            <h4>Free Express Shipping</h4>
+            <p>On all orders above ₹499</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box orange">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <div class="feature-info">
+            <h4>100% Genuine Quality</h4>
+            <p>Direct from verified brands</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box blue">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="feature-info">
+            <h4>7-Day Easy Returns</h4>
+            <p>Hassle-free replacement policy</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box purple">
+            <i class="fa-solid fa-credit-card"></i>
+          </div>
+          <div class="feature-info">
+            <h4>Secure Multi-Payments</h4>
+            <p>UPI, Cards, NetBanking & COD</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Catalog Section -->
+    <section class="catalog-section" id="catalogSection">
+      
+      <!-- Catalog Controls Header -->
+      <div class="catalog-header-bar">
+        <div class="catalog-title-group">
+          <h2>Featured Products</h2>
+          <span class="catalog-subtitle" id="catalogCount">Showing products...</span>
+        </div>
+
+        <div class="catalog-tools">
+          <!-- Sort Dropdown -->
+          <select id="sortSelect" class="sort-select">
+            <option value="featured">✨ Sort by: Featured</option>
+            <option value="price-low">💵 Price: Low to High</option>
+            <option value="price-high">💎 Price: High to Low</option>
+            <option value="rating">⭐ Highest Customer Rating</option>
+            <option value="discount">🔥 Highest Discount (%)</option>
+          </select>
+
+          <!-- Grid / List View Toggle -->
+          <div class="view-mode-toggle">
+            <button id="viewGridBtn" class="view-btn active" title="Grid View">
+              <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+            <button id="viewListBtn" class="view-btn" title="List View">
+              <i class="fa-solid fa-list"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="productsGrid" class="products-grid">
+        <!-- Rendered dynamically by js/ui.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide-Over Shopping Cart Drawer -->
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <aside id="cartDrawer" class="cart-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <i class="fa-solid fa-bag-shopping" style="color: var(--primary);"></i>
+        <span>Shopping Cart</span>
+        <span class="category-chip-badge cart-badge-count">0</span>
+      </div>
+      <button id="cartDrawerCloseBtn" class="drawer-close-btn" title="Close Drawer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Free Shipping Progress Meter -->
+    <div class="shipping-meter-wrap">
+      <div class="shipping-meter-text" id="shippingProgressMsg">
+        Add items for FREE Delivery
+      </div>
+      <div class="shipping-progress-bar">
+        <div id="shippingProgressFill" class="shipping-progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cartItemsList" class="cart-items-container">
+      <!-- Populated dynamically -->
+    </div>
+
+    <!-- Drawer Footer & Price Summary -->
+    <div class="drawer-footer">
+      <!-- Coupon Application -->
+      <div class="coupon-box">
+        <input type="text" id="cartCouponInput" class="coupon-input" placeholder="Promo code (e.g. HARISH25)">
+        <button id="cartApplyCouponBtn" class="apply-coupon-btn">Apply</button>
+      </div>
+      <div id="appliedCouponContainer"></div>
+
+      <!-- Price Breakdown -->
+      <div class="cart-summary-line">
+        <span>Items Subtotal</span>
+        <span id="cartSubtotal">₹0</span>
+      </div>
+      <div class="cart-summary-line" style="color: var(--accent-green);">
+        <span>Coupon Savings</span>
+        <span id="cartDiscount">-₹0</span>
+      </div>
+      <div class="cart-summary-line">
+        <span>Estimated Delivery</span>
+        <span id="cartShipping">FREE</span>
+      </div>
+      <div class="cart-summary-line total">
+        <span>Total Payable:</span>
+        <span id="cartTotal" style="color: var(--primary);">₹0</span>
+      </div>
+
+      <button id="cartCheckoutBtn" class="checkout-btn">
+        Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div id="quickViewModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal('quickViewModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="quickViewContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Step Checkout Modal -->
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 650px;">
+      <button class="modal-close-btn" onclick="closeModal('checkoutModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="checkoutContent" class="checkout-modal-content">
+        <!-- Rendered dynamically through checkout steps -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div id="wishlistModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 620px; padding: 2rem;">
+      <button class="modal-close-btn" onclick="closeModal('wishlistModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="wishlistContent">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- User Account & Admin Store Manager Modal -->
+  <div id="accountModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 680px; padding: 2rem;">
+      <button class="modal-close-btn" onclick="closeModal('accountModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="accountContent">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Live AI Assistant Floating Widget -->
+  <button id="chatWidgetBtn" class="chat-widget-btn" title="Chat with Harish Mart Assistant">
+    <i class="fa-solid fa-comments"></i>
+  </button>
+
+  <div id="chatWindow" class="chat-window">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-bot-avatar">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 0.95rem;">Harish Mart Assistant</div>
+          <div style="font-size: 0.75rem; opacity: 0.85;"><i class="fa-solid fa-circle" style="color: #4ade80; font-size: 0.6rem;"></i> Online • Instant Support</div>
+        </div>
+      </div>
+      <button id="chatCloseBtn" style="color: #fff; font-size: 1.1rem;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div id="chatMessages" class="chat-messages">
+      <div class="chat-msg bot">
+        👋 Hi! Welcome to <b>HARISH MART</b>. How can I help you today? Check our top offers or ask anything about delivery & tracking.
+        <div class="chat-suggestions">
+          <span class="chat-chip" onclick="handleChatQuery('Show Active Coupons')">Active Coupons</span>
+          <span class="chat-chip" onclick="handleChatQuery('Track My Order')">Track Order</span>
+          <span class="chat-chip" onclick="handleChatQuery('Delivery Times')">Delivery Times</span>
+          <span class="chat-chip" onclick="handleChatQuery('Return Policy')">Return Policy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Ask about orders, delivery, offers...">
+      <button id="chatSendBtn" class="chat-send-btn" title="Send Message">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <div class="footer-brand">
+          <h3>HARISH MART</h3>
+          <p>Your one-stop premier destination for daily fresh groceries, cutting-edge electronics, trendsetting apparel, kitchen appliances, and luxury wellness essentials. Quality you can trust, delivered with speed.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-icon-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon-btn" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="#catalogSection" onclick="app.selectedCategory='groceries'; renderCategories(); renderProducts();">Daily Groceries</a></li>
+            <li><a href="#catalogSection" onclick="app.selectedCategory='electronics'; renderCategories(); renderProducts();">Electronics & Gadgets</a></li>
+            <li><a href="#catalogSection" onclick="app.selectedCategory='fashion'; renderCategories(); renderProducts();">Fashion & Apparel</a></li>
+            <li><a href="#catalogSection" onclick="app.selectedCategory='home'; renderCategories(); renderProducts();">Home & Kitchen</a></li>
+            <li><a href="#catalogSection" onclick="app.selectedCategory='beauty'; renderCategories(); renderProducts();">Beauty & Wellness</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="openAccountModal('history')">Track My Order</a></li>
+            <li><a href="#" onclick="openAccountModal('history')">Order History</a></li>
+            <li><a href="#" onclick="showToast('Free 7-Day returns on all items!', 'info')">Returns & Refunds</a></li>
+            <li><a href="#" onclick="showToast('Free shipping applies on all orders above ₹499!', 'info')">Shipping Rates</a></li>
+            <li><a href="#" onclick="openAccountModal('admin')">Store Manager Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="footer-links">
+            <li><i class="fa-solid fa-location-dot" style="margin-right: 0.5rem; color: var(--primary);"></i> Plot 42, MG Road, Bengaluru, KA 560001</li>
+            <li><i class="fa-solid fa-phone" style="margin-right: 0.5rem; color: var(--primary);"></i> +91 98765 43210</li>
+            <li><i class="fa-solid fa-envelope" style="margin-right: 0.5rem; color: var(--primary);"></i> support@harishmart.com</li>
+            <li><i class="fa-solid fa-clock" style="margin-right: 0.5rem; color: var(--primary);"></i> Open 7 Days: 7:00 AM - 11:00 PM</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div>&copy; 2026 <b>HARISH MART</b>. All rights reserved. Crafted with care for exceptional shopping.</div>
+        <div class="payment-badges" title="Supported Payment Methods">
+          <i class="fa-brands fa-cc-visa" title="Visa"></i>
+          <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+          <i class="fa-brands fa-google-pay" title="Google Pay"></i>
+          <i class="fa-brands fa-apple-pay" title="Apple Pay"></i>
+          <i class="fa-solid fa-money-bill-wave" title="Cash on Delivery"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
